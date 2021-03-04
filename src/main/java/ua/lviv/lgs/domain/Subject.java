@@ -1,6 +1,6 @@
 package ua.lviv.lgs.domain;
 
-public enum Discipline {
+public enum Subject {
 	CERTIFICATE,
 	MATHEMATICS,
 	PHYSICS,

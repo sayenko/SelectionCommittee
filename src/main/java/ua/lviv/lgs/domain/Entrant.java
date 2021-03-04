@@ -1,6 +1,6 @@
 package ua.lviv.lgs.domain;
 
-import java.util.Map;
+import java.util.Set;
 
 public class Entrant {
 	
@@ -10,31 +10,31 @@ public class Entrant {
 	private Integer age;
 	private String contacts;
 	private User user;	
-	Map<Discipline, Integer> disciplineList;
+	Set<SubjectsAndPoints> subjectsList;
 	Faculty faculty;
 	
 	public Entrant() {}
 
 	public Entrant(String firstName, String lastName, Integer age, String contacts, User user,
-			Map<Discipline, Integer> disciplineList, Faculty faculty) {
+			Set<SubjectsAndPoints> subjectsList, Faculty faculty) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.contacts = contacts;
 		this.user = user;
-		this.disciplineList = disciplineList;
+		this.subjectsList = subjectsList;
 		this.faculty = faculty;
 	}
 
 	public Entrant(Integer id, String firstName, String lastName, Integer age, String contacts, User user,
-			Map<Discipline, Integer> disciplineList, Faculty faculty) {
+			Set<SubjectsAndPoints> subjectsList, Faculty faculty) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.contacts = contacts;
 		this.user = user;
-		this.disciplineList = disciplineList;
+		this.subjectsList = subjectsList;
 		this.faculty = faculty;
 	}
 
@@ -86,12 +86,12 @@ public class Entrant {
 		this.user = user;
 	}
 
-	public Map<Discipline, Integer> getDisciplineList() {
-		return disciplineList;
+	public Set<SubjectsAndPoints> getSubjectsList() {
+		return subjectsList;
 	}
 
-	public void setDisciplineList(Map<Discipline, Integer> disciplineList) {
-		this.disciplineList = disciplineList;
+	public void setSubjectsList(Set<SubjectsAndPoints> subjectsList) {
+		this.subjectsList = subjectsList;
 	}
 
 	public Faculty getFacultyList() {
@@ -108,7 +108,7 @@ public class Entrant {
 		int result = 1;
 		result = prime * result + ((age == null) ? 0 : age.hashCode());
 		result = prime * result + ((contacts == null) ? 0 : contacts.hashCode());
-		result = prime * result + ((disciplineList == null) ? 0 : disciplineList.hashCode());
+		result = prime * result + ((subjectsList == null) ? 0 : subjectsList.hashCode());
 		result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -136,10 +136,10 @@ public class Entrant {
 				return false;
 		} else if (!contacts.equals(other.contacts))
 			return false;
-		if (disciplineList == null) {
-			if (other.disciplineList != null)
+		if (subjectsList == null) {
+			if (other.subjectsList != null)
 				return false;
-		} else if (!disciplineList.equals(other.disciplineList))
+		} else if (!subjectsList.equals(other.subjectsList))
 			return false;
 		if (faculty == null) {
 			if (other.faculty != null)
@@ -172,7 +172,7 @@ public class Entrant {
 	@Override
 	public String toString() {
 		return "Entrant [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age
-				+ ", contacts=" + contacts + ", user=" + user + ", disciplineList=" + disciplineList + ", facultyList="
+				+ ", contacts=" + contacts + ", user=" + user + ", subjectsList=" + subjectsList + ", facultyList="
 				+ faculty + "]";
 	}
 	
