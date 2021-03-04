@@ -3,6 +3,7 @@ package ua.lviv.lgs.domain;
 import java.util.Map;
 
 public class Entrant {
+	
 	private Integer id;
 	private String firstName;
 	private String lastName;

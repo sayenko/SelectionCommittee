@@ -1,24 +1,23 @@
 package ua.lviv.lgs.domain;
 
-import java.util.Set;
-
 public class User {
+	
 	private Integer id;
 	private String login;
 	private String password;
 	private Role role;
-	private Set<Entrant> entrantSet;
+	private Entrant entrantSet;
 	
 	public User() {}
 
-	public User(String login, String password, Role role, Set<Entrant> entrantSet) {
+	public User(String login, String password, Role role, Entrant entrantSet) {
 		this.login = login;
 		this.password = password;
 		this.role = role;
 		this.entrantSet = entrantSet;
 	}
 
-	public User(Integer id, String login, String password, Role role, Set<Entrant> entrantSet) {
+	public User(Integer id, String login, String password, Role role, Entrant entrantSet) {
 		this.id = id;
 		this.login = login;
 		this.password = password;
@@ -58,11 +57,11 @@ public class User {
 		this.role = role;
 	}
 
-	public Set<Entrant> getEntrantSet() {
+	public Entrant getEntrant() {
 		return entrantSet;
 	}
 
-	public void setEntrantSet(Set<Entrant> entrantSet) {
+	public void setEntrant(Entrant entrantSet) {
 		this.entrantSet = entrantSet;
 	}
 
