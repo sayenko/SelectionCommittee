@@ -20,6 +20,7 @@ public class User {
 	
 	private String login;
 	private String password;
+	private String passwordConfirm;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Entrant entrant;
@@ -36,12 +37,22 @@ public class User {
 		this.entrant = entrant;
 	}
 
-	public User(Integer id, String login, String password, Role role, Entrant entrant) {
+	public User(Integer id, String login, String password, String passwordConfirm, Role role, Entrant entrant) {
 		this.id = id;
 		this.login = login;
 		this.password = password;
+		this.passwordConfirm = passwordConfirm;
 		this.role = role;
 		this.entrant = entrant;
+	}
+	
+	public User(User user) {
+		this.id = user.id;
+		this.login = user.login;
+		this.password = user.password;
+		this.passwordConfirm = user.passwordConfirm;
+		this.role = user.role;
+		this.entrant = user.entrant;
 	}
 
 	public Integer getId() {
@@ -82,6 +93,14 @@ public class User {
 
 	public void setEntrant(Entrant entrant) {
 		this.entrant = entrant;
+	}
+	
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
 
 	@Override
