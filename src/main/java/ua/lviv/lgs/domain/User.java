@@ -1,28 +1,47 @@
 package ua.lviv.lgs.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
 	private String login;
 	private String password;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Entrant entrant;
+	
+	@Enumerated(EnumType.STRING)
 	private Role role;
-	private Entrant entrantSet;
 	
 	public User() {}
 
-	public User(String login, String password, Role role, Entrant entrantSet) {
+	public User(String login, String password, Role role, Entrant entrant) {
 		this.login = login;
 		this.password = password;
 		this.role = role;
-		this.entrantSet = entrantSet;
+		this.entrant = entrant;
 	}
 
-	public User(Integer id, String login, String password, Role role, Entrant entrantSet) {
+	public User(Integer id, String login, String password, Role role, Entrant entrant) {
 		this.id = id;
 		this.login = login;
 		this.password = password;
 		this.role = role;
-		this.entrantSet = entrantSet;
+		this.entrant = entrant;
 	}
 
 	public Integer getId() {
@@ -58,18 +77,18 @@ public class User {
 	}
 
 	public Entrant getEntrant() {
-		return entrantSet;
+		return entrant;
 	}
 
-	public void setEntrant(Entrant entrantSet) {
-		this.entrantSet = entrantSet;
+	public void setEntrant(Entrant entrant) {
+		this.entrant = entrant;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((entrantSet == null) ? 0 : entrantSet.hashCode());
+		result = prime * result + ((entrant == null) ? 0 : entrant.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -86,10 +105,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (entrantSet == null) {
-			if (other.entrantSet != null)
+		if (entrant == null) {
+			if (other.entrant != null)
 				return false;
-		} else if (!entrantSet.equals(other.entrantSet))
+		} else if (!entrant.equals(other.entrant))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -114,7 +133,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", login=" + login + ", password=" + password + ", role=" + role + ", entrant="
-				+ entrantSet + "]";
+				+ entrant + "]";
 	}	
 	
 }

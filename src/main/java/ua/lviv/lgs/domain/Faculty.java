@@ -2,22 +2,43 @@ package ua.lviv.lgs.domain;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "faculty")
 public class Faculty {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String name;
+	
+	@Column(name = "recruitment_plan")
 	private int recruitmentPlan;
 	
-	Set<SubjectsAndPoints> subjectsList;
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "faculty")
+    @Column(nullable = false)
+	Set<PassingSubjectsAndPoints> subjectsList;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "faculty")
+	Set<Entrant> entrants;
 	
 	public Faculty() {}
 	
-	public Faculty(String name, Set<SubjectsAndPoints> subjectsList) {
+	public Faculty(String name, Set<PassingSubjectsAndPoints> subjectsList) {
 		this.name = name;
 		this.subjectsList = subjectsList;
 	}
 
-	public Faculty(int recruitmentPlan, Integer id, String name, Set<SubjectsAndPoints> subjectsList) {
+	public Faculty(int recruitmentPlan, Integer id, String name, Set<PassingSubjectsAndPoints> subjectsList) {
 		this.recruitmentPlan = recruitmentPlan;
 		this.id = id;
 		this.name = name;
@@ -48,12 +69,20 @@ public class Faculty {
 		this.name = name;
 	}
 
-	public Set<SubjectsAndPoints> getSubjectsList() {
+	public Set<PassingSubjectsAndPoints> getSubjectsList() {
 		return subjectsList;
 	}
 
-	public void setSubjectsList(Set<SubjectsAndPoints> subjectsList) {
+	public void setSubjectsList(Set<PassingSubjectsAndPoints> subjectsList) {
 		this.subjectsList = subjectsList;
+	}
+	
+	public Set<Entrant> getEntrants() {
+		return entrants;
+	}
+
+	public void setEntrants(Set<Entrant> entrants) {
+		this.entrants = entrants;
 	}
 
 	@Override

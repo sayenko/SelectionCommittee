@@ -1,22 +1,45 @@
 package ua.lviv.lgs.domain;
 
-public class SubjectsAndPoints {
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "passing_subjects_and_points")
+public class PassingSubjectsAndPoints {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Enumerated(EnumType.STRING)
 	private Subject subject;
 	private Integer points;
 	
-	public SubjectsAndPoints() {}
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "faculty_id", nullable = false)
+	private Faculty faculty;
+	
+	public PassingSubjectsAndPoints() {}
 
-	public SubjectsAndPoints(Subject subject, Integer points) {
+	public PassingSubjectsAndPoints(Subject subject, Integer points, Faculty faculty) {
 		this.subject = subject;
 		this.points = points;
+		this.faculty = faculty;
 	}
 
-	public SubjectsAndPoints(Integer id, Subject subject, Integer points) {
+	public PassingSubjectsAndPoints(Integer id, Subject subject, Integer points, Faculty faculty) {
 		this.id = id;
 		this.subject = subject;
 		this.points = points;
+		this.faculty = faculty;
 	}
 
 	public Integer getId() {
@@ -41,6 +64,14 @@ public class SubjectsAndPoints {
 
 	public void setPoints(Integer points) {
 		this.points = points;
+	}	
+	
+	public Faculty getFaculty() {
+		return faculty;
+	}
+
+	public void setFaculty(Faculty faculty) {
+		this.faculty = faculty;
 	}
 
 	@Override
@@ -61,7 +92,7 @@ public class SubjectsAndPoints {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SubjectsAndPoints other = (SubjectsAndPoints) obj;
+		PassingSubjectsAndPoints other = (PassingSubjectsAndPoints) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -1,22 +1,42 @@
 package ua.lviv.lgs.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+//NOT SURE YET
+
+//@Entity
+//@Table(name = "entrant_register")
 public class EntrantRegister {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Integer entrantId;
-	private Integer facultyId;
+	
+	@ManyToOne
+	@JoinColumn(name = "entrant_id", referencedColumnName = "id")
+	private Entrant entrant;
+	
+	@ManyToOne
+	@JoinColumn(name = "faculty_id", referencedColumnName = "id")
+	private Faculty faculty;
 	
 	public EntrantRegister() {}
 
-	public EntrantRegister(Integer entrantId, Integer facultyId) {
-		this.entrantId = entrantId;
-		this.facultyId = facultyId;
+	public EntrantRegister(Entrant entrant, Faculty faculty) {
+		this.entrant = entrant;
+		this.faculty = faculty;
 	}
 
-	public EntrantRegister(Integer id, Integer entrantId, Integer facultyId) {
+	public EntrantRegister(Integer id, Entrant entrant, Faculty faculty) {
 		this.id = id;
-		this.entrantId = entrantId;
-		this.facultyId = facultyId;
+		this.entrant = entrant;
+		this.faculty = faculty;
 	}
 
 	public Integer getId() {
@@ -27,28 +47,28 @@ public class EntrantRegister {
 		this.id = id;
 	}
 
-	public Integer getEntrantId() {
-		return entrantId;
+	public Entrant getEntrant() {
+		return entrant;
 	}
 
-	public void setEntrantId(Integer entrantId) {
-		this.entrantId = entrantId;
+	public void setEntrant(Entrant entrant) {
+		this.entrant = entrant;
 	}
 
-	public Integer getFacultyId() {
-		return facultyId;
+	public Faculty getFaculty() {
+		return faculty;
 	}
 
-	public void setFacultyId(Integer facultyId) {
-		this.facultyId = facultyId;
+	public void setFaculty(Faculty faculty) {
+		this.faculty = faculty;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((entrantId == null) ? 0 : entrantId.hashCode());
-		result = prime * result + ((facultyId == null) ? 0 : facultyId.hashCode());
+		result = prime * result + ((entrant == null) ? 0 : entrant.hashCode());
+		result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
@@ -62,15 +82,15 @@ public class EntrantRegister {
 		if (getClass() != obj.getClass())
 			return false;
 		EntrantRegister other = (EntrantRegister) obj;
-		if (entrantId == null) {
-			if (other.entrantId != null)
+		if (entrant == null) {
+			if (other.entrant != null)
 				return false;
-		} else if (!entrantId.equals(other.entrantId))
+		} else if (!entrant.equals(other.entrant))
 			return false;
-		if (facultyId == null) {
-			if (other.facultyId != null)
+		if (faculty == null) {
+			if (other.faculty != null)
 				return false;
-		} else if (!facultyId.equals(other.facultyId))
+		} else if (!faculty.equals(other.faculty))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -82,7 +102,7 @@ public class EntrantRegister {
 
 	@Override
 	public String toString() {
-		return "EntrantRegister [id=" + id + ", entrantId=" + entrantId + ", facultyId=" + facultyId + "]";
+		return "EntrantRegister [id=" + id + ", entrant=" + entrant + ", faculty=" + faculty + "]";
 	}
 	
 }

@@ -2,21 +2,50 @@ package ua.lviv.lgs.domain;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "entrant")
 public class Entrant {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Column(name = "first_name")
 	private String firstName;
+	
+	@Column(name = "last_name")
 	private String lastName;
 	private Integer age;
 	private String contacts;
-	private User user;	
-	Set<SubjectsAndPoints> subjectsList;
+	
+	@OneToOne(mappedBy="entrant")
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "faculty_id", nullable = false)
 	Faculty faculty;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "entrant")
+    @Column(nullable = false)
+	Set<EntranceSubjectsAndPoints> subjectsList;
 	
 	public Entrant() {}
 
 	public Entrant(String firstName, String lastName, Integer age, String contacts, User user,
-			Set<SubjectsAndPoints> subjectsList, Faculty faculty) {
+			Set<EntranceSubjectsAndPoints> subjectsList, Faculty faculty) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
@@ -27,7 +56,7 @@ public class Entrant {
 	}
 
 	public Entrant(Integer id, String firstName, String lastName, Integer age, String contacts, User user,
-			Set<SubjectsAndPoints> subjectsList, Faculty faculty) {
+			Set<EntranceSubjectsAndPoints> subjectsList, Faculty faculty) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -86,19 +115,19 @@ public class Entrant {
 		this.user = user;
 	}
 
-	public Set<SubjectsAndPoints> getSubjectsList() {
+	public Set<EntranceSubjectsAndPoints> getSubjectsList() {
 		return subjectsList;
 	}
 
-	public void setSubjectsList(Set<SubjectsAndPoints> subjectsList) {
+	public void setSubjectsList(Set<EntranceSubjectsAndPoints> subjectsList) {
 		this.subjectsList = subjectsList;
 	}
 
-	public Faculty getFacultyList() {
+	public Faculty getFaculty() {
 		return faculty;
 	}
 
-	public void setFacultyList(Faculty faculty) {
+	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
 	}
 
