@@ -67,6 +67,9 @@
 								<p>${currentEntrant.age}</p>
 								<p>${currentEntrant.contacts}</p>
 								<p>${currentEntrant.faculty.name}</p>
+								<c:forEach items="${currentEntrant.subjectsMap}" var="subjectsAndPoints">
+									<p>${subjectsAndPoints.key}:  ${subjectsAndPoints.value}</p>
+								</c:forEach>
 							</div>
 							<button class="w3-button w3-block w3-dark-grey">Create</button>
 						</div>
