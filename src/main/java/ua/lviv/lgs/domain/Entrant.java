@@ -1,17 +1,22 @@
 package ua.lviv.lgs.domain;
 
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +25,7 @@ import javax.persistence.Table;
 public class Entrant {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name = "first_name")
@@ -31,40 +36,55 @@ public class Entrant {
 	private Integer age;
 	private String contacts;
 	
-	@OneToOne(mappedBy="entrant")
+	@OneToOne(cascade = CascadeType.ALL)
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "faculty_id", nullable = false)
+	@JoinColumn(name = "faculty_id")
 	Faculty faculty;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "entrant")
-    @Column(nullable = false)
-	Set<EntranceSubjectsAndPoints> subjectsList;
+	@ElementCollection
+    @CollectionTable(name="entrant_subject_and_points")
+    @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyColumn(name="subject_type")
+    @Column(name="subject_points")
+	private Map<Subject, Integer> subjectsMap;
 	
-	public Entrant() {}
+	public Entrant() {
+		
+		if(this.subjectsMap == null) {
+			this.subjectsMap = new HashMap<Subject, Integer>();
+		}
+		
+	}
 
 	public Entrant(String firstName, String lastName, Integer age, String contacts, User user,
-			Set<EntranceSubjectsAndPoints> subjectsList, Faculty faculty) {
+			Map<Subject, Integer> subjectsMap, Faculty faculty) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.contacts = contacts;
 		this.user = user;
-		this.subjectsList = subjectsList;
 		this.faculty = faculty;
+		
+		if(this.subjectsMap == null) {
+		this.subjectsMap = new HashMap<Subject, Integer>();
+	} else this.subjectsMap = subjectsMap;
 	}
 
 	public Entrant(Integer id, String firstName, String lastName, Integer age, String contacts, User user,
-			Set<EntranceSubjectsAndPoints> subjectsList, Faculty faculty) {
+			Map<Subject, Integer> subjectsMap, Faculty faculty) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
 		this.contacts = contacts;
 		this.user = user;
-		this.subjectsList = subjectsList;
 		this.faculty = faculty;
+		
+		if(this.subjectsMap == null) {
+			this.subjectsMap = new HashMap<Subject, Integer>();
+		} else this.subjectsMap = subjectsMap;
 	}
 
 	public Integer getId() {
@@ -115,14 +135,6 @@ public class Entrant {
 		this.user = user;
 	}
 
-	public Set<EntranceSubjectsAndPoints> getSubjectsList() {
-		return subjectsList;
-	}
-
-	public void setSubjectsList(Set<EntranceSubjectsAndPoints> subjectsList) {
-		this.subjectsList = subjectsList;
-	}
-
 	public Faculty getFaculty() {
 		return faculty;
 	}
@@ -131,13 +143,21 @@ public class Entrant {
 		this.faculty = faculty;
 	}
 
+	public Map<Subject, Integer> getSubjectsMap() {
+		return subjectsMap;
+	}
+
+	public void setSubjectsMap(Map<Subject, Integer> subjectsMap) {
+		this.subjectsMap = subjectsMap;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((age == null) ? 0 : age.hashCode());
 		result = prime * result + ((contacts == null) ? 0 : contacts.hashCode());
-		result = prime * result + ((subjectsList == null) ? 0 : subjectsList.hashCode());
+		result = prime * result + ((subjectsMap == null) ? 0 : subjectsMap.hashCode());
 		result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -165,10 +185,10 @@ public class Entrant {
 				return false;
 		} else if (!contacts.equals(other.contacts))
 			return false;
-		if (subjectsList == null) {
-			if (other.subjectsList != null)
+		if (subjectsMap == null) {
+			if (other.subjectsMap != null)
 				return false;
-		} else if (!subjectsList.equals(other.subjectsList))
+		} else if (!subjectsMap.equals(other.subjectsMap))
 			return false;
 		if (faculty == null) {
 			if (other.faculty != null)
@@ -201,8 +221,10 @@ public class Entrant {
 	@Override
 	public String toString() {
 		return "Entrant [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age
-				+ ", contacts=" + contacts + ", user=" + user + ", subjectsList=" + subjectsList + ", facultyList="
-				+ faculty + "]";
+				+ ", contacts=" + contacts + ", user=" + user + ", subjectsMap="
+				+ subjectsMap + ", facultyList="
+				+ faculty
+				+ "]";
 	}
 	
 }

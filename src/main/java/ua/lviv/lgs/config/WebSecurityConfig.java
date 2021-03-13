@@ -37,10 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers("/").permitAll()
-		.antMatchers("/home").access("hasRole('ROLE_ENTRANT')").anyRequest().permitAll().and()
-		
+		.antMatchers("/home").access("hasRole('ROLE_ENTRANT')")
+		.antMatchers("/create-entrant").access("hasRole('ROLE_ENTRANT') or hasRole('ROLE_ADMINISTRATOR')")
+		.anyRequest().permitAll()
+		.and()		
 		.formLogin().loginPage("/login")
-		.defaultSuccessUrl("/home").usernameParameter("login").passwordParameter("password").and()
+		.defaultSuccessUrl("/home").usernameParameter("login").passwordParameter("password")
+		.and()
 		.logout().logoutSuccessUrl("/login?logout").and()
 		.exceptionHandling().accessDeniedPage("/403").and()
 		.csrf();

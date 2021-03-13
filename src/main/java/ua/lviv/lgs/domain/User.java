@@ -1,6 +1,5 @@
 package ua.lviv.lgs.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,14 +14,14 @@ import javax.persistence.Table;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String login;
 	private String password;
 	private String passwordConfirm;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(mappedBy="user")
 	private Entrant entrant;
 	
 	@Enumerated(EnumType.STRING)
