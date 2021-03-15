@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
@@ -49,6 +50,9 @@ public class Entrant {
     @MapKeyColumn(name="subject_type")
     @Column(name="subject_points")
 	private Map<Subject, Integer> subjectsMap;
+	
+	@Lob
+	private String photo;
 	
 	public Entrant() {
 		
@@ -149,6 +153,14 @@ public class Entrant {
 
 	public void setSubjectsMap(Map<Subject, Integer> subjectsMap) {
 		this.subjectsMap = subjectsMap;
+	}
+	
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	@Override

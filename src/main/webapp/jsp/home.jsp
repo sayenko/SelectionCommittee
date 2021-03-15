@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -60,7 +61,7 @@
 					<c:forEach items="${entrants}" var="currentEntrant">
 
 						<div class="w3-card-4" style="width: 20%; margin:2%" >
-							<img src="https://kaverisias.com/wp-content/uploads/2018/01/catalog-default-img.gif" alt="Norway" style="width: 100%">
+							<img src="data:image/jpg;base64, ${currentEntrant.photo}" alt="photo" style="width: 100%">
 							<div class="w3-container w3-center">
 								<h3>${currentEntrant.firstName}</h3>
 								<p>${currentEntrant.lastName}</p>
@@ -71,7 +72,11 @@
 									<p>${subjectsAndPoints.key}:  ${subjectsAndPoints.value}</p>
 								</c:forEach>
 							</div>
-							<button class="w3-button w3-block w3-dark-grey">Create</button>
+							
+							<form:form action="${contextPath}/bucket" method="POST" enctype="multipart/form-data">
+								<input type="hidden" value="${currentEntrant.id}" class="form-control"  name="entrantId">
+								<input type="submit" class="w3-button w3-block w3-dark-grey" value="Create">
+							</form:form>
 						</div>
 
 					</c:forEach>

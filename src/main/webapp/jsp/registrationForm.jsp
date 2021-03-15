@@ -37,44 +37,49 @@
 				</c:if>
 
 
-				<form:form method="POST" action="${contextPath}/addEntrant" modelAttribute="entrant">
+				<form:form method="POST" action="${contextPath}/addEntrant" enctype="multipart/form-data">
 					<table>
 						<tr>
-							<td><form:label path="firstName">First Name</form:label></td>
-							<td><form:input path="firstName" /></td>
+							<td>First Name</td>
+							<td><input type="text" name="firstName" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="lastName">Last Name</form:label></td>
-							<td><form:input path="lastName" /></td>
+							<td>Last Name</td>
+							<td><input type="text" name="lastName" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="age">Age</form:label></td>
-							<td><form:input path="age" type="number" min="0" /></td>
+							<td>Age</td>
+							<td><input type="number" min="0" name="age" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="contacts">Contacts</form:label></td>
-							<td><form:input path="contacts" /></td>
+							<td>Contacts</td>
+							<td><input name="contacts" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="faculty">Faculty</form:label></td>
+							<td>Faculty</td>
 							<td>
-								<form:select path="faculty" >
+								<select name="faculty" >
 									<c:forEach var="faculty" items="${allFaculties}">
 										<option value="${faculty}" >${faculty}</option>
 									</c:forEach>
-								</form:select>
+								</select>
 							</td>
 						</tr>
 						
 						<tr>
-							<td><form:label path="subjectAndPoints">Subject And Points</form:label></td>
+							<td>Subject And Points</td>
 							<td>								
 								<c:forEach var="subject" items="${allSubjects}" >
-									<form:checkbox path="subjectAndPoints" value="${subject}" /> ${subject} 
-									<form:input path="subjectAndPoints" type="number" min="0" />
+									<input type="checkbox" name="subjectAndPoints" value="${subject}" /> ${subject} 
+									<input name="subjectAndPoints" type="number" min="0" />
 									<br>
 								</c:forEach>
 							</td>
+						</tr>
+						
+						<tr>
+							<td>Select an image to upload</td>
+							<td><input type="file" name="image" /></td>
 						</tr>
 						
 						<tr>

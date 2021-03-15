@@ -1,6 +1,8 @@
 package ua.lviv.lgs.controller;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.lviv.lgs.domain.Entrant;
@@ -31,19 +35,28 @@ public class EntrantController {
 	FacultyService facultyService; 
 
 	@RequestMapping(value = "/addEntrant", method = RequestMethod.POST)
-	public ModelAndView createPeriodical(@Valid @ModelAttribute("entrant") EntrantResponse entrantResponse, BindingResult bindingResult) {
+	public ModelAndView createPeriodical(			
+			@RequestParam String firstName,
+			@RequestParam String lastName,
+			@RequestParam Integer age, 
+			@RequestParam String contacts,
+			@RequestParam String faculty,
+			@RequestParam String subjectAndPoints,
+			@RequestParam MultipartFile image) throws IOException {
+		
 		Entrant entrant = new Entrant();
-		entrant.setFirstName(entrantResponse.getFirstName());
-		entrant.setLastName(entrantResponse.getLastName());
-		entrant.setAge(entrantResponse.getAge());
-		entrant.setContacts(entrantResponse.getContacts());		
+		entrant.setFirstName(firstName);
+		entrant.setLastName(lastName);
+		entrant.setAge(age);
+		entrant.setContacts(contacts);
 		
-		entrant.setSubjectsMap(subjectAndPoints(entrantResponse.getSubjectAndPoints()));
+		entrant.setSubjectsMap(subjectAndPoints(subjectAndPoints));
 		
-		Faculty faculty = facultyService.findByName(entrantResponse.getFaculty());
-		entrant.setFaculty(faculty);
+		Faculty newFaculty = facultyService.findByName(faculty);
+		entrant.setFaculty(newFaculty);
 		
-		faculty.getEntrants().add(entrant);
+		entrant.setPhoto(Base64.getEncoder().encodeToString(image.getBytes()));
+		
 		entrantsService.save(entrant);
 		return new ModelAndView("redirect:/home");
 	}

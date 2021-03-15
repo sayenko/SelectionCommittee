@@ -1,9 +1,5 @@
 package ua.lviv.lgs.dto;
 
-import java.util.Map;
-
-import ua.lviv.lgs.domain.Subject;
-
 public class EntrantResponse {
 	
 	private String firstName;

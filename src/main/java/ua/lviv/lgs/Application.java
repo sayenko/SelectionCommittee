@@ -20,7 +20,6 @@ public class Application {
 		ConfigurableApplicationContext run = SpringApplication.run(Application.class, args);
 		
 		new Application().createFacultyAndPassings(run);
-		new Application().createEntrant(run);
 	}
 	
 	public void createFacultyAndPassings(ConfigurableApplicationContext run) {
@@ -49,23 +48,5 @@ public class Application {
 		//Save faculty
 		facultyService.save(faculty);
 		facultyService.save(faculty2);
-	}
-
-	public void createEntrant(ConfigurableApplicationContext run) {
-		EntrantRepository entrantRepository = run.getBean(EntrantRepository.class);
-		
-		Entrant entrant = new Entrant();
-		entrant.setFirstName("first");
-		entrant.setLastName("last");
-		entrant.setAge(15);
-		entrant.setContacts("Contacts");
-		
-		
-		Map<Subject, Integer> map = new HashMap<Subject, Integer>();
-		map.put(Subject.CERTIFICATE, 50);
-		map.put(Subject.MATHEMATICS, 150);
-		entrant.setSubjectsMap(map);
-		
-		entrantRepository.save(entrant);
 	}
 }

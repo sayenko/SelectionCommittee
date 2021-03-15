@@ -23,6 +23,10 @@ public class EntrantService {
 		return entrantRepository.findAll();
 	}
 	
+	public Entrant findById(Integer id) {		
+		return entrantRepository.findById(id).get();
+	}
+	
 	public Subject[] getSubjects() {
 		return EntrantRepository.getSubjects();
 	}

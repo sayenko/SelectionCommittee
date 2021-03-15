@@ -71,7 +71,6 @@ public class UserController {
     @RequestMapping(value ="/create-entrant", method = RequestMethod.GET)
     public ModelAndView createEntrant() {
     	ModelAndView map = new ModelAndView("registrationForm");
-		map.addObject("entrant", new EntrantResponse());
 		List<String> allFaculties = facultyService.getAllFaculties().stream().map(Faculty::getName).collect(Collectors.toList());
     	map.addObject("allFaculties", allFaculties);
     	map.addObject("allSubjects", entrantService.getSubjects());
