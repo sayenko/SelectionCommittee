@@ -1,11 +1,16 @@
 package ua.lviv.lgs.domain;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,6 +25,9 @@ public class User {
 	private String login;
 	private String password;
 	private String passwordConfirm;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
+	private Set<EntrantRegister> entrantRegisterSet;
 	
 	@OneToOne(mappedBy="user")
 	private Entrant entrant;
@@ -100,6 +108,14 @@ public class User {
 
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
+	}
+
+	public Set<EntrantRegister> getEntrantRegisterSet() {
+		return entrantRegisterSet;
+	}
+
+	public void setEntrantRegisterSet(Set<EntrantRegister> entrantRegisterSet) {
+		this.entrantRegisterSet = entrantRegisterSet;
 	}
 
 	@Override

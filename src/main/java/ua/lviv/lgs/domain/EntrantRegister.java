@@ -1,28 +1,34 @@
 package ua.lviv.lgs.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 //NOT SURE YET
 
-//@Entity
-//@Table(name = "entrant_register")
+@Entity
+@Table(name = "entrant_register")
 public class EntrantRegister {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name = "entrant_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	private Entrant entrant;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "faculty_id", referencedColumnName = "id")
 	private Faculty faculty;
 	
@@ -61,6 +67,14 @@ public class EntrantRegister {
 
 	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

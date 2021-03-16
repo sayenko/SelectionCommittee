@@ -40,6 +40,9 @@ public class Entrant {
 	@OneToOne(cascade = CascadeType.ALL)
 	private User user;
 	
+	@OneToOne(mappedBy="entrant")
+	private EntrantRegister entrantRegister;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "faculty_id")
 	Faculty faculty;
@@ -161,6 +164,14 @@ public class Entrant {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public EntrantRegister getEntrantRegister() {
+		return entrantRegister;
+	}
+
+	public void setEntrantRegister(EntrantRegister entrantRegister) {
+		this.entrantRegister = entrantRegister;
 	}
 
 	@Override

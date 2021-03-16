@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.lviv.lgs.domain.Faculty;
 import ua.lviv.lgs.domain.User;
-import ua.lviv.lgs.dto.EntrantResponse;
 import ua.lviv.lgs.service.EntrantService;
 import ua.lviv.lgs.service.FacultyService;
 import ua.lviv.lgs.service.UserService;

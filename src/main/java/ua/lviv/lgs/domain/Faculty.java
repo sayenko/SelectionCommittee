@@ -41,6 +41,9 @@ public class Faculty {
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "faculty")
 	Set<Entrant> entrants;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "faculty")
+	private Set<EntrantRegister> entrantRegisterSet;
+	
 	public Faculty() {
 		if(this.entrants == null) {
 			this.entrants = new HashSet<Entrant>();
@@ -101,6 +104,14 @@ public class Faculty {
 
 	public void setEntrants(Set<Entrant> entrants) {
 		this.entrants = entrants;
+	}
+
+	public Set<EntrantRegister> getEntrantRegisterSet() {
+		return entrantRegisterSet;
+	}
+
+	public void setEntrantRegisterSet(Set<EntrantRegister> entrantRegisterSet) {
+		this.entrantRegisterSet = entrantRegisterSet;
 	}
 
 	@Override
