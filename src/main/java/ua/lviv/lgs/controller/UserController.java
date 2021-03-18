@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.lviv.lgs.domain.Entrant;
 import ua.lviv.lgs.domain.Faculty;
 import ua.lviv.lgs.domain.User;
-import ua.lviv.lgs.service.EntrantRegisterService;
 import ua.lviv.lgs.service.EntrantService;
 import ua.lviv.lgs.service.FacultyService;
 import ua.lviv.lgs.service.UserService;
@@ -29,9 +28,6 @@ public class UserController {
     
     @Autowired
     private EntrantService entrantService;
-    
-    @Autowired
-    private EntrantRegisterService entrantRegisterService;
     
     @Autowired
     private FacultyService facultyService;
@@ -85,16 +81,15 @@ public class UserController {
     
     public List<Entrant> unallocatedEntrants() {
     	List<Entrant> allEntrants = entrantService.getAllEntrants();
-    	List<Entrant> collect = entrantRegisterService.getAll().stream().map(x-> x.getEntrant()).collect(Collectors.toList());
     	
 //    	List<Entrant> coll = new ArrayList<Entrant>();
 //    	for(Entrant entrant: allEntrants) {
-//    		if(!collect.contains(entrant)) {
+//    		if(!entrant.isAddedToRegister()) {
 //    			coll.add(entrant);
 //    		}
 //    	}
 //    	return coll;
-    	return allEntrants.stream().filter(entrant -> !collect.contains(entrant)).collect(Collectors.toList());
+    	return allEntrants.stream().filter(entrant -> !entrant.isAddedToRegister()).collect(Collectors.toList());
     }
     
 }

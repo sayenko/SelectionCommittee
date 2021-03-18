@@ -1,7 +1,6 @@
 package ua.lviv.lgs.controller;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -46,6 +45,8 @@ public class EntrantRegisterController {
 	public ModelAndView create(@RequestParam Integer entrantId, @RequestParam String facultyName) {
 		
 		Entrant entrant = entrantService.findById(entrantId);
+		entrant.setAddedToRegister(true);
+		entrantService.save(entrant);
 		
 		EntrantRegister entrantRegister = new EntrantRegister();
 		EntrantRegister isAlreadyCreatedEntrantRegister = entrantRegisterService.findByEntrantId(entrantId);
@@ -79,8 +80,6 @@ public class EntrantRegisterController {
 		map.addObject("registerItems", entrantRegisterService.getAll());
 		return map;
 	}
-	
-
 	
 	public boolean isPassing(Faculty faculty, Map<Subject, Integer> entrantSubjectAndPoints) {
 		

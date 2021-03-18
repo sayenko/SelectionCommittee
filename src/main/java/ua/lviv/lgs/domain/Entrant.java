@@ -60,6 +60,9 @@ public class Entrant {
 	@Column(name = "total_score")
 	private Integer totalScore;
 	
+	@Column(name = "is_added_to_register")
+	private boolean isAddedToRegister;
+	
 	public Entrant() {
 		
 		if(this.subjectsMap == null) {
@@ -183,6 +186,14 @@ public class Entrant {
 
 	public void setTotalScore(Integer totalScore) {
 		this.totalScore = totalScore;
+	}
+	
+	public boolean isAddedToRegister() {
+		return isAddedToRegister;
+	}
+
+	public void setAddedToRegister(boolean isAddedToRegister) {
+		this.isAddedToRegister = isAddedToRegister;
 	}
 
 	@Override

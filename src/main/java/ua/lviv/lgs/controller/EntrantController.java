@@ -62,6 +62,7 @@ public class EntrantController {
 		entrant.setLastName(lastName);
 		entrant.setAge(age);
 		entrant.setContacts(contacts);
+		entrant.setAddedToRegister(false);
 		
 		Map<Subject, Integer> sap = subjectAndPoints(subjectAndPoints);		
 		entrant.setSubjectsMap(sap);
