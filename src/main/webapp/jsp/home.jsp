@@ -31,7 +31,7 @@
 			<h3 class="w3-bar-item">Menu</h3>
 			<a href="/home" class="w3-bar-item w3-button">Home</a>
 			<a href="/create-entrant" class="w3-bar-item w3-button">Registration form</a>
-			<a href="#" class="w3-bar-item w3-button">Bucket</a>
+			<a href="/registers" class="w3-bar-item w3-button">Register</a>
 		</div>
 
 
@@ -73,8 +73,9 @@
 								</c:forEach>
 							</div>
 							
-							<form:form action="${contextPath}/bucket" method="POST" enctype="multipart/form-data">
+							<form:form action="${contextPath}/register" method="POST" enctype="multipart/form-data">
 								<input type="hidden" value="${currentEntrant.id}" class="form-control"  name="entrantId">
+								<input type="hidden" value="${currentEntrant.faculty.name}" class="form-control"  name="facultyName">
 								<input type="submit" class="w3-button w3-block w3-dark-grey" value="Create">
 							</form:form>
 						</div>

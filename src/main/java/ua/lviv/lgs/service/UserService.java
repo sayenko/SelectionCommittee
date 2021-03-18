@@ -16,7 +16,6 @@ public class UserService{
     @Autowired
     private PasswordEncoder bCryptPasswordEncoder;
 
-
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setPasswordConfirm(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
@@ -24,4 +23,8 @@ public class UserService{
         userRepository.save(user);
     }
 
+    public User findByLogin(String login) {
+    	return userRepository.findByLogin(login).get();
+    }
+    
 }

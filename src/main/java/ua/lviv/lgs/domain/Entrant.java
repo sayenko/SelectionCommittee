@@ -57,6 +57,9 @@ public class Entrant {
 	@Lob
 	private String photo;
 	
+	@Column(name = "total_score")
+	private Integer totalScore;
+	
 	public Entrant() {
 		
 		if(this.subjectsMap == null) {
@@ -64,7 +67,7 @@ public class Entrant {
 		}
 		
 	}
-
+	
 	public Entrant(String firstName, String lastName, Integer age, String contacts, User user,
 			Map<Subject, Integer> subjectsMap, Faculty faculty) {
 		this.firstName = firstName;
@@ -172,6 +175,14 @@ public class Entrant {
 
 	public void setEntrantRegister(EntrantRegister entrantRegister) {
 		this.entrantRegister = entrantRegister;
+	}
+
+	public Integer getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(Integer totalScore) {
+		this.totalScore = totalScore;
 	}
 
 	@Override

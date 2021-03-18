@@ -33,6 +33,10 @@ public class EntrantRegister {
 	private Faculty faculty;
 	
 	public EntrantRegister() {}
+	
+	public EntrantRegister(Integer id) {
+		this.id = id;
+	}
 
 	public EntrantRegister(Entrant entrant, Faculty faculty) {
 		this.entrant = entrant;

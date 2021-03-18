@@ -7,9 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import ua.lviv.lgs.dao.EntrantRepository;
 import ua.lviv.lgs.dao.FacultyRepository;
-import ua.lviv.lgs.domain.Entrant;
 import ua.lviv.lgs.domain.Faculty;
 import ua.lviv.lgs.domain.Subject;
 

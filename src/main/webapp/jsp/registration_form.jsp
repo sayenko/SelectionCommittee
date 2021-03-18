@@ -17,7 +17,7 @@
 			<h3 class="w3-bar-item">Menu</h3>
 			<a href="/home" class="w3-bar-item w3-button">Home</a>
 			<a href="/create-entrant" class="w3-bar-item w3-button">Registration form</a>
-			<a href="#" class="w3-bar-item w3-button">Bucket</a>
+			<a href="/registers" class="w3-bar-item w3-button">Register</a>
 		</div>
 
 
