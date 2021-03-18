@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Periodicals</title>
+<title>Entrants Registration</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
@@ -37,6 +37,9 @@
 				</c:if>
 
 
+				<c:forEach var="faculty" items="${facultiesItems}">
+				
+				<h3>${faculty.name}</h3>
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -51,21 +54,24 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="register" items="${registerItems}">
-							<tr>
-								<td>${register.id}</td>
-								<td>${register.user.id}</td>
-								<td>${register.entrant.firstName}</td>
-								<td>${register.entrant.lastName}</td>
-								<td><img src="data:image/jpg;base64,${register.entrant.photo}" alt="image" style="width: 10%"></td>
-								<td>${register.entrant.faculty.name}</td>
-								<td>${register.entrant.totalScore}</td>
+						<c:forEach var="register" items="${registerItems}">						
+							<c:if test="${faculty.name == register.entrant.faculty.name}">
+								<tr>
+									<td>${register.id}</td>
+									<td>${register.user.id}</td>
+									<td>${register.entrant.firstName}</td>
+									<td>${register.entrant.lastName}</td>
+									<td><img src="data:image/jpg;base64,${register.entrant.photo}" alt="image" style="width: 10%"></td>
+									<td>${register.entrant.faculty.name}</td>
+									<td>${register.entrant.totalScore}</td>
 								<td><a href="register?id=${register.id}">delete</a></td>
 							</tr>
-						</c:forEach>
+							</c:if>
+						</c:forEach>						
 					</tbody>
-				</table>
-
+					</table>
+				
+				</c:forEach>
 			</div>
 		</div>
 

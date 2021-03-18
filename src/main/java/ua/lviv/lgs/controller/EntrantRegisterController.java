@@ -1,5 +1,8 @@
 package ua.lviv.lgs.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.lviv.lgs.domain.Entrant;
 import ua.lviv.lgs.domain.EntrantRegister;
 import ua.lviv.lgs.domain.Faculty;
+import ua.lviv.lgs.domain.SortEntrantRegisterByEntrantTotalPionts;
 import ua.lviv.lgs.domain.Subject;
 import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.service.EntrantRegisterService;
@@ -38,7 +42,7 @@ public class EntrantRegisterController {
 	
 	@RequestMapping(value ="/registers", method = RequestMethod.GET)
 	public ModelAndView getAllItems() {
-		return getRegistrItems();
+		return getRegisterItems();
 	}
 	
 	@RequestMapping(value ="/register", method = RequestMethod.POST)
@@ -66,18 +70,27 @@ public class EntrantRegisterController {
 		if(isPassing(faculty, entrant.getSubjectsMap())) {
 			entrantRegisterService.add(entrantRegister);
 		}
-		return getRegistrItems();
+		return getRegisterItems();
 	}
 	 
 	@RequestMapping(value ="/register", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam String id) {
 		entrantRegisterService.delete(new EntrantRegister(Integer.parseInt(id.replaceAll("\\s", ""))));
-		return getRegistrItems();
+		return getRegisterItems();
 	}
 	 
-	private ModelAndView getRegistrItems() {
+	private ModelAndView getRegisterItems() {
 		ModelAndView map = new ModelAndView("register_sheet");
-		map.addObject("registerItems", entrantRegisterService.getAll());
+		
+		List<EntrantRegister> allEntrantRegister = entrantRegisterService.getAll();
+		Collections.sort(allEntrantRegister, new SortEntrantRegisterByEntrantTotalPionts());
+		
+		List<Faculty> allFaculties = facultyService.getAllFaculties();
+		
+		List<EntrantRegister> actualEntrantRegister = createActualEntrantRegister(allFaculties, allEntrantRegister);
+		
+		map.addObject("registerItems", actualEntrantRegister);
+		map.addObject("facultiesItems", allFaculties);
 		return map;
 	}
 	
@@ -100,6 +113,26 @@ public class EntrantRegisterController {
 			.anyMatch(entrantEntry -> entrantEntry.getKey().name().equalsIgnoreCase(facultyEntry.getKey().name())
         && entrantEntry.getValue() < facultyEntry.getValue()));
 
+	}
+	
+	public List<EntrantRegister> createActualEntrantRegister(List<Faculty> allFaculties, List<EntrantRegister> allEntrantRegister){
+		List<EntrantRegister> actualEntrantRegister = new ArrayList<EntrantRegister>();
+		
+		for(Faculty faculty: allFaculties) {
+			int i = 0;
+			for(EntrantRegister entrantRegister: allEntrantRegister) {
+			
+				if(entrantRegister.getFaculty().getName().equalsIgnoreCase(faculty.getName())) {
+					actualEntrantRegister.add(entrantRegister);
+					i++;
+				}
+				int recruitmentPlan = faculty.getRecruitmentPlan();
+				if(i == recruitmentPlan) {
+					break;
+				}
+			}
+		}
+		return actualEntrantRegister;
 	}
 	
 }
