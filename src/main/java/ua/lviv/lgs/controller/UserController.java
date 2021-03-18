@@ -1,5 +1,6 @@
 package ua.lviv.lgs.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.lviv.lgs.domain.Entrant;
 import ua.lviv.lgs.domain.Faculty;
 import ua.lviv.lgs.domain.User;
+import ua.lviv.lgs.service.EntrantRegisterService;
 import ua.lviv.lgs.service.EntrantService;
 import ua.lviv.lgs.service.FacultyService;
 import ua.lviv.lgs.service.UserService;
@@ -26,6 +29,9 @@ public class UserController {
     
     @Autowired
     private EntrantService entrantService;
+    
+    @Autowired
+    private EntrantRegisterService entrantRegisterService;
     
     @Autowired
     private FacultyService facultyService;
@@ -62,8 +68,8 @@ public class UserController {
     @RequestMapping(value ="/home", method = RequestMethod.GET)
     public ModelAndView welcome() {
 		ModelAndView map = new ModelAndView("home");
-		map.addObject("entrants", entrantService.getAllEntrants());
-
+		map.addObject("entrants", unallocatedEntrants());
+		unallocatedEntrants();
 		return map;
 	}
     
@@ -75,6 +81,20 @@ public class UserController {
     	map.addObject("allSubjects", entrantService.getSubjects());
     	
         return map;
+    }
+    
+    public List<Entrant> unallocatedEntrants() {
+    	List<Entrant> allEntrants = entrantService.getAllEntrants();
+    	List<Entrant> collect = entrantRegisterService.getAll().stream().map(x-> x.getEntrant()).collect(Collectors.toList());
+    	
+//    	List<Entrant> coll = new ArrayList<Entrant>();
+//    	for(Entrant entrant: allEntrants) {
+//    		if(!collect.contains(entrant)) {
+//    			coll.add(entrant);
+//    		}
+//    	}
+//    	return coll;
+    	return allEntrants.stream().filter(entrant -> !collect.contains(entrant)).collect(Collectors.toList());
     }
     
 }

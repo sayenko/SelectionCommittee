@@ -1,5 +1,8 @@
 package ua.lviv.lgs.controller;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.lviv.lgs.domain.Entrant;
 import ua.lviv.lgs.domain.EntrantRegister;
+import ua.lviv.lgs.domain.Faculty;
+import ua.lviv.lgs.domain.Subject;
 import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.service.EntrantRegisterService;
 import ua.lviv.lgs.service.EntrantService;
@@ -54,9 +59,12 @@ public class EntrantRegisterController {
 		User findUserByLogin = userService.findByLogin(userLogin);
 		entrantRegister.setUser(findUserByLogin);
 		
-		entrantRegister.setFaculty(facultyService.findByName(facultyName));
+		Faculty faculty = facultyService.findByName(facultyName);
+		entrantRegister.setFaculty(faculty);
 		
-		entrantRegisterService.add(entrantRegister);
+		if(isPassing(faculty, entrant.getSubjectsMap())) {
+			entrantRegisterService.add(entrantRegister);
+		}
 		return getRegistrItems();
 	}
 	 
@@ -70,6 +78,29 @@ public class EntrantRegisterController {
 		ModelAndView map = new ModelAndView("register_sheet");
 		map.addObject("registerItems", entrantRegisterService.getAll());
 		return map;
+	}
+	
+
+	
+	public boolean isPassing(Faculty faculty, Map<Subject, Integer> entrantSubjectAndPoints) {
+		
+		Map<Subject, Integer> facultySubjectAndPoints = faculty.getSubjectsMap();		
+
+//		for (Entry<Subject, Integer> facultyEntry : facultySubjectAndPoints.entrySet()) {
+//			for (Entry<Subject, Integer> entrantEntry : entrantSubjectAndPoints.entrySet()) {
+//				if(entrantEntry.getKey().name().equalsIgnoreCase(facultyEntry.getKey().name())
+//						&& entrantEntry.getValue() < facultyEntry.getValue()) {
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+
+		return facultySubjectAndPoints.entrySet().stream()
+		.noneMatch(facultyEntry -> entrantSubjectAndPoints.entrySet().stream()
+			.anyMatch(entrantEntry -> entrantEntry.getKey().name().equalsIgnoreCase(facultyEntry.getKey().name())
+        && entrantEntry.getValue() < facultyEntry.getValue()));
+
 	}
 	
 }

@@ -72,7 +72,7 @@ public class EntrantController {
 		entrant.setPhoto(Base64.getEncoder().encodeToString(image.getBytes()));
 		entrant.setTotalScore(totalScoreCalculation(newFaculty, sap));
 		
-		entrantsService.save(entrant);
+		entrantsService.save(entrant);		
 		return new ModelAndView("redirect:/home");
 	}
 	
@@ -103,4 +103,5 @@ public class EntrantController {
 		}
 		return total;
 	}
+	
 }
