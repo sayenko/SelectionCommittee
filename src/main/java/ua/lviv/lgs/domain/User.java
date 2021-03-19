@@ -166,8 +166,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", login=" + login + ", password=" + password + ", role=" + role + ", entrant="
-				+ entrant + "]";
+		return "User [id=" + id + ", login=" + login + ", role=" + role + "]";
 	}	
 	
 }
