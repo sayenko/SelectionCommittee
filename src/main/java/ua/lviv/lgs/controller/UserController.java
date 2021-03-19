@@ -47,7 +47,7 @@ public class UserController {
         }
         userService.save(userForm);
 
-        return "redirect:/home";
+        return "redirect:/entrants_list";
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
@@ -61,9 +61,9 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value ="/home", method = RequestMethod.GET)
+    @RequestMapping(value ="/entrants_list", method = RequestMethod.GET)
     public ModelAndView welcome() {
-		ModelAndView map = new ModelAndView("home");
+		ModelAndView map = new ModelAndView("entrants_list");
 		map.addObject("entrants", unallocatedEntrants());
 		unallocatedEntrants();
 		return map;

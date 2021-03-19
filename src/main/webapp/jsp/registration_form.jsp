@@ -15,7 +15,7 @@
 		<!-- Sidebar -->
 		<div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 10%">
 			<h3 class="w3-bar-item">Menu</h3>
-			<a href="/home" class="w3-bar-item w3-button">Home</a>
+			<a href="/entrants_list" class="w3-bar-item w3-button">Entrants list</a>
 			<a href="/create-entrant" class="w3-bar-item w3-button">Registration form</a>
 			<a href="/registers" class="w3-bar-item w3-button">Register</a>
 		</div>

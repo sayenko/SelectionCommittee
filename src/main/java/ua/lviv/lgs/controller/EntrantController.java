@@ -74,7 +74,7 @@ public class EntrantController {
 		entrant.setTotalScore(totalScoreCalculation(newFaculty, sap));
 		
 		entrantsService.save(entrant);		
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/entrants_list");
 	}
 	
 	public Map<Subject, Integer> subjectAndPoints(String subjectAndPoints){		
