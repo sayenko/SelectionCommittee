@@ -1,12 +1,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Entrants Registration</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link type="text/css"  href="account.css" rel="stylesheet">
 </head>
 <body>
 <body>
@@ -15,9 +18,15 @@
 		<!-- Sidebar -->
 		<div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 10%">
 			<h3 class="w3-bar-item">Menu</h3>
-			<a href="/entrants_list" class="w3-bar-item w3-button">Entrants list</a>
-			<a href="/create-entrant" class="w3-bar-item w3-button">Registration form</a>
 			<a href="/registers" class="w3-bar-item w3-button">Register</a>
+			
+			<security:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+				<a href="/entrants_list" class="w3-bar-item w3-button">Entrants list</a>
+			</security:authorize>
+
+			<security:authorize access="hasRole('ROLE_ENTRANT')">
+				<a href="/create-entrant" class="w3-bar-item w3-button">Registration form</a>
+			</security:authorize>
 		</div>
 
 
@@ -50,7 +59,10 @@
 							<th>Image</th>
 							<th>Faculty</th>
 							<th>Total Scores</th>
-							<th>Action</th>
+							
+							<security:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+								<th>Action</th>
+							</security:authorize>
 						</tr>
 					</thead>
 					<tbody>
@@ -64,7 +76,10 @@
 									<td><img src="data:image/jpg;base64,${register.entrant.photo}" alt="image" style="width: 10%"></td>
 									<td>${register.entrant.faculty.name}</td>
 									<td>${register.entrant.totalScore}</td>
-								<td><a href="register?id=${register.id}">delete</a></td>
+									
+									<security:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+										<td><a href="register?id=${register.id}">delete</a></td>
+									</security:authorize>	
 							</tr>
 							</c:if>
 						</c:forEach>						

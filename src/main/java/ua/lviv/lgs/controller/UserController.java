@@ -47,7 +47,7 @@ public class UserController {
         }
         userService.save(userForm);
 
-        return "redirect:/entrants_list";
+        return "redirect:/registers";
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
