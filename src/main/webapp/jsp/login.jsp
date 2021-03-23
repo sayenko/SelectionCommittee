@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -21,6 +20,21 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var selItem = localStorage.getItem("locales");
+		$('#locales').val(selItem ? selItem : 'en');
+		$("#locales").change(function() {
+			var selectedOption = $('#locales').val();
+			if (selectedOption) {
+				window.location.replace('?lang=' + selectedOption);
+				localStorage.setItem("locales", selectedOption);
+			}
+		});
+	});
+</script>
+
 </head>
 
 <body>
@@ -35,24 +49,33 @@
     </div>
     
       <form method="POST" action="${contextPath}/login" class="form-signin">
-        <h2 class="form-heading">Entrant Registration</h2>
+        <h2 class="form-heading"><spring:message code='login.title'/></h2>
 
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${message}</span>
-            <input name="login" type="text" placeholder="Login" class="fadeIn second" 
-                   autofocus="autofocus"/>
-            <input name="password" type="password" placeholder="Password" class="fadeIn third "/>
+            <input name="login" type="text" placeholder="<spring:message code='login.login'/>" class="fadeIn second" autofocus="autofocus"/>
+            <input name="password" type="password" placeholder="<spring:message code='login.password'/>" class="fadeIn third "/>
             <span>${error}</span>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             
-            <input class="fadeIn fourth" type="submit" value="Log In"/>
+            <input class="fadeIn fourth" type="submit" value="<spring:message code='login.signin'/>"/>
         </div>
 
-    </form>    
-
+    </form>
+    
+	<div>
+		<fieldset>
+			<label><spring:message code="login.choose_language" /></label>
+			<select id="locales">
+				<option value="en"><spring:message code='login.english'/></option>
+				<option value="ua"><spring:message code='login.ukrainian'/></option>
+			</select>
+		</fieldset>
+	</div>
+	
     <!-- Remind Passowrd -->
     <div id="formFooter">
-      <a class="underlineHover"  href="${contextPath}/registration" >Create an account</a>
+      <a class="underlineHover"  href="${contextPath}/registration" ><spring:message code='login.create_account'/></a>
     </div>
 
   </div>
