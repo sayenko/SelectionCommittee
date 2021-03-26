@@ -16,7 +16,7 @@ public class FacultyService {
 	private Logger logger = LoggerFactory.getLogger(FacultyService.class);
 	
 	@Autowired
-	FacultyRepository facultyRepository;
+	private FacultyRepository facultyRepository;
 	
 	public void save(Faculty faculty) {
 		logger.info("Register new faculty {}: " + faculty);
