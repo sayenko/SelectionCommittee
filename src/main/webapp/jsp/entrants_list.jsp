@@ -19,30 +19,65 @@
 <title><spring:message code="entrants_list.title"/></title>
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <link type="text/css"  href="account.css" rel="stylesheet">
 </head>
 
 <body>
-	<div class="container">
-
+	<div class="container-fluid" >
 
 		<!-- Sidebar -->
-		<div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 10%">
-			<h3 class="w3-bar-item"><spring:message code='menu.menu'/></h3>
-			<a href="/registers" class="w3-bar-item w3-button"><spring:message code='menu.register'/></a>
-			
-			<security:authorize access="hasRole('ROLE_ADMINISTRATOR')">
-				<a href="/entrants_list" class="w3-bar-item w3-button"><spring:message code='menu.entrants_list'/></a>
-			</security:authorize>
-			
-			<security:authorize access="hasRole('ROLE_ENTRANT')">
-				<a href="/create-entrant" class="w3-bar-item w3-button"><spring:message code='menu.registration_form'/></a>
-			</security:authorize>
+		
+		<div class="w3-sidebar" style="width: 11%">
+
+			<div class="list-group" style="margin-top: 40px">
+
+				<div class="list-group-item active">
+					<div>
+						<h3><spring:message code='login.title'/></h3>
+					</div>
+					<div>${pageContext.request.userPrincipal.name}</div>
+				</div>
+
+				<a href="/registers" class="list-group-item">
+				<i class="fa fa-comment-o"></i>
+				<spring:message code='menu.entrants_list'/>
+				</a>
+
+				<security:authorize access="hasRole('ROLE_ADMINISTRATOR')">
+					<a href="/entrants_list" class="list-group-item">
+					<i class="fa fa-search"></i><spring:message code='menu.entrants_list'/>
+					</a>
+				</security:authorize>
+
+				<security:authorize access="hasRole('ROLE_ENTRANT')">
+					<a href="/create-entrant" class="list-group-item">
+					<i class="fa fa-search"></i> <spring:message code='menu.registration_form'/>
+					</a>
+				</security:authorize>
+
+
+				<c:if test="${pageContext.request.userPrincipal.name != null}">
+					<form id="logoutForm" method="POST" action="${contextPath}/logout">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form>
+
+					<a class="list-group-item" onclick="document.forms['logoutForm'].submit()" style="cursor: pointer">
+						<i class="fa fa-search"></i>
+						<spring:message code='menu.logout'/>
+					</a>
+
+				</c:if>
+
+			</div>
 		</div>
 
 
 		<!-- Page Content -->
-		<div style="margin-left: 10%">
+		<div style="margin-left: 11%">
 
 			<div class="w3-container w3-teal">
 				<h1><spring:message code="entrants_list.head"/></h1>
@@ -50,22 +85,10 @@
 
 			<div class="w3-container">
 
-				<c:if test="${pageContext.request.userPrincipal.name != null}">
-					<form id="logoutForm" method="POST" action="${contextPath}/logout">
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
-					</form>
-					<h2>
-						<spring:message code='main.welcome'/> ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()"><spring:message code='main.logout'/></a>
-					</h2>
-				</c:if>
-
-
-
 				<c:if test="${not empty entrants}">
 					<c:forEach items="${entrants}" var="currentEntrant">
 
-						<div class="w3-card-4" style="width: 20%; margin:2%" >
+						<div class="w3-card-4" style="width: 20%; margin: 2%; float:left">
 							<img src="data:image/jpg;base64, ${currentEntrant.photo}" alt="photo" style="width: 100%">
 							<div class="w3-container w3-center">
 								<h3>${currentEntrant.firstName}</h3>
