@@ -6,12 +6,14 @@ import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import ua.lviv.lgs.dao.FacultyRepository;
 import ua.lviv.lgs.domain.Faculty;
 import ua.lviv.lgs.domain.Subject;
 
 @SpringBootApplication
+@ComponentScan({"ua.lviv.lgs"})
 public class Application {
 
 	public static void main(String[] args) {

@@ -2,7 +2,6 @@ package ua.lviv.lgs;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -120,6 +119,7 @@ class ApplicationTests {
 		Faculty faculty = new Faculty();
 		faculty.setName("1-st");
 		faculty.setRecruitmentPlan(50);
+		facultyRepository.save(faculty);
 		
 		entrant.setFaculty(faculty);
 		entrantService.save(entrant);
@@ -130,7 +130,7 @@ class ApplicationTests {
 		Entrant entrantFromDb = entrants.get(0);
 		assertTrue(entrantFromDb.getFirstName().equals(entrant.getFirstName()));
 		assertTrue(entrantFromDb.getLastName().equals(entrant.getLastName()));
-		assertTrue(entrantFromDb.getAge()==entrant.getAge());
+		assertTrue(entrantFromDb.getAge().equals(entrant.getAge()));
 		assertTrue(entrantFromDb.getContacts().equals(entrant.getContacts()));
 		assertTrue(entrantFromDb.getFaculty().equals(entrant.getFaculty()));
 		assertTrue(entrantFromDb.getPhoto().equals(entrant.getPhoto()));
@@ -158,6 +158,7 @@ class ApplicationTests {
 		Faculty faculty = new Faculty();
 		faculty.setName("1-st");
 		faculty.setRecruitmentPlan(50);
+		facultyRepository.save(faculty);
 		
 		entrant.setFaculty(faculty);
 		entrant2.setFaculty(faculty);
@@ -168,14 +169,14 @@ class ApplicationTests {
 		
 		assertTrue(entrants.get(0).getFirstName().equals(entrant.getFirstName()));
 		assertTrue(entrants.get(0).getLastName().equals(entrant.getLastName()));
-		assertTrue(entrants.get(0).getAge()==entrant.getAge());
+		assertTrue(entrants.get(0).getAge().equals(entrant.getAge()));
 		assertTrue(entrants.get(0).getContacts().equals(entrant.getContacts()));
 		assertTrue(entrants.get(0).getFaculty().equals(entrant.getFaculty()));
 		assertTrue(entrants.get(0).getPhoto().equals(entrant.getPhoto()));
 		
 		assertTrue(entrants.get(1).getFirstName().equals(entrant2.getFirstName()));
 		assertTrue(entrants.get(1).getLastName().equals(entrant2.getLastName()));
-		assertTrue(entrants.get(1).getAge()==entrant2.getAge());
+		assertTrue(entrants.get(1).getAge().equals(entrant2.getAge()));
 		assertTrue(entrants.get(1).getContacts().equals(entrant2.getContacts()));
 		assertTrue(entrants.get(1).getFaculty().equals(entrant2.getFaculty()));
 		assertTrue(entrants.get(1).getPhoto().equals(entrant2.getPhoto()));
@@ -186,22 +187,40 @@ class ApplicationTests {
 		List<Entrant> entrants = entrantRepository.findAll();
 		assertThat(entrants, hasSize(0));
 		
+		Faculty faculty = new Faculty();
+		faculty.setName("1-st");
+		faculty.setRecruitmentPlan(50);
+		
+		Map<Subject, Integer> subjects = new HashMap<Subject, Integer>();
+		subjects.put(Subject.PHYSICS, 70);
+		subjects.put(Subject.CERTIFICATE, 60);
+		
+		faculty.setSubjectsMap(subjects);
+		
+		facultyService.save(faculty);
+		
 		Entrant entrant = new Entrant();
 		entrant.setFirstName("1");
 		entrant.setLastName("1");
 		entrant.setAge(1);
 		entrant.setContacts("1");
 		entrant.setPhoto("1");
+		entrant.setFaculty(faculty);
 		
 		entrantService.save(entrant);
 		
 		entrants = entrantRepository.findAll();
 		assertThat(entrants, hasSize(1));
 		
+		Integer facultyId = entrants.get(0).getFaculty().getId();
+		Faculty facultyFromEntrant = entrant.getFaculty();
+		facultyFromEntrant.setId(facultyId);
+		entrant.setFaculty(facultyFromEntrant);
+		
 		Entrant entrantFromDb = entrantService.findById(entrants.get(0).getId());
 		assertTrue(entrantFromDb.getFirstName().equals(entrant.getFirstName()));
 		assertTrue(entrantFromDb.getLastName().equals(entrant.getLastName()));
-		assertTrue(entrantFromDb.getAge()==entrant.getAge());
+		assertTrue(entrantFromDb.getAge().equals(entrant.getAge()));
 		assertTrue(entrantFromDb.getContacts().equals(entrant.getContacts()));
 		assertTrue(entrantFromDb.getFaculty().equals(entrant.getFaculty()));
 		assertTrue(entrantFromDb.getPhoto().equals(entrant.getPhoto()));
@@ -312,6 +331,7 @@ class ApplicationTests {
 		user.setPassword("1");
 		user.setPasswordConfirm("1");
 		user.setRole(Role.ROLE_ENTRANT);
+		userRepository.save(user);
 		
 		Faculty faculty = new Faculty();
 		faculty.setName("1-st");
@@ -320,6 +340,7 @@ class ApplicationTests {
 		subjects.put(Subject.PHYSICS, 70);
 		subjects.put(Subject.CERTIFICATE, 60);		
 		faculty.setSubjectsMap(subjects);
+		facultyRepository.save(faculty);
 		
 		Entrant entrant = new Entrant();
 		entrant.setFirstName("1");
@@ -329,6 +350,7 @@ class ApplicationTests {
 		entrant.setPhoto("1");		
 		entrant.setFaculty(faculty);
 		entrant.setUser(user);
+		entrantRepository.save(entrant);
 		
 		entrantRegister.setEntrant(entrant);		
 		entrantRegister.setFaculty(faculty);
@@ -342,6 +364,7 @@ class ApplicationTests {
 		user2.setPassword("2");
 		user2.setPasswordConfirm("2");
 		user2.setRole(Role.ROLE_ENTRANT);
+		userRepository.save(user2);
 		
 		Faculty faculty2 = new Faculty();
 		faculty2.setName("2-nd");
@@ -350,6 +373,7 @@ class ApplicationTests {
 		subjects2.put(Subject.MATHEMATICS, 65);
 		subjects2.put(Subject.CERTIFICATE, 70);		
 		faculty2.setSubjectsMap(subjects2);
+		facultyRepository.save(faculty2);
 		
 		Entrant entrant2 = new Entrant();
 		entrant2.setFirstName("2");
@@ -359,6 +383,7 @@ class ApplicationTests {
 		entrant2.setPhoto("2");		
 		entrant2.setFaculty(faculty2);
 		entrant2.setUser(user2);
+		entrantRepository.save(entrant2);
 		
 		entrantRegister2.setEntrant(entrant2);		
 		entrantRegister2.setFaculty(faculty2);
@@ -371,6 +396,7 @@ class ApplicationTests {
 		
 	}
 
+	@Test
 	public void testDeleteEntrantRegister() {
 		List<EntrantRegister> entrantRegisters = entrantRegisterRepository.findAll();
 		assertThat(entrantRegisters, hasSize(0));
@@ -383,7 +409,7 @@ class ApplicationTests {
 		user.setPassword("1");
 		user.setPasswordConfirm("1");
 		user.setRole(Role.ROLE_ENTRANT);
-		userService.save(user);
+		userRepository.save(user);
 		
 		Faculty faculty = new Faculty();
 		faculty.setName("1-st");
@@ -392,7 +418,7 @@ class ApplicationTests {
 		subjects.put(Subject.PHYSICS, 70);
 		subjects.put(Subject.CERTIFICATE, 60);		
 		faculty.setSubjectsMap(subjects);
-		facultyService.save(faculty);
+		facultyRepository.save(faculty);
 		
 		Entrant entrant = new Entrant();
 		entrant.setFirstName("1");
@@ -402,7 +428,7 @@ class ApplicationTests {
 		entrant.setPhoto("1");		
 		entrant.setFaculty(faculty);
 		entrant.setUser(user);
-		entrantService.save(entrant);
+		entrantRepository.save(entrant);
 		
 		entrantRegister.setEntrant(entrant);		
 		entrantRegister.setFaculty(faculty);
@@ -416,7 +442,7 @@ class ApplicationTests {
 		user2.setPassword("2");
 		user2.setPasswordConfirm("2");
 		user2.setRole(Role.ROLE_ENTRANT);
-		userService.save(user2);
+		userRepository.save(user2);
 		
 		Faculty faculty2 = new Faculty();
 		faculty2.setName("2-nd");
@@ -425,7 +451,7 @@ class ApplicationTests {
 		subjects2.put(Subject.MATHEMATICS, 65);
 		subjects2.put(Subject.CERTIFICATE, 70);		
 		faculty2.setSubjectsMap(subjects2);
-		facultyService.save(faculty2);
+		facultyRepository.save(faculty2);
 		
 		Entrant entrant2 = new Entrant();
 		entrant2.setFirstName("2");
@@ -435,7 +461,7 @@ class ApplicationTests {
 		entrant2.setPhoto("2");		
 		entrant2.setFaculty(faculty2);
 		entrant2.setUser(user2);
-		entrantService.save(entrant2);
+		entrantRepository.save(entrant2);
 		
 		entrantRegister2.setEntrant(entrant2);		
 		entrantRegister2.setFaculty(faculty2);
@@ -456,6 +482,7 @@ class ApplicationTests {
 		
 	}
 
+	@Test
 	public void testAddEntrantRegister() {
 		List<EntrantRegister> entrantRegisters = entrantRegisterRepository.findAll();
 		assertThat(entrantRegisters, hasSize(0));
@@ -491,6 +518,7 @@ class ApplicationTests {
 		entrantRegister.setEntrant(entrant);		
 		entrantRegister.setFaculty(faculty);
 		entrantRegister.setUser(user);
+		entrantRegisterRepository.save(entrantRegister);
 		
 		entrantRegisters = entrantRegisterRepository.findAll();
 		assertThat(entrantRegisters, hasSize(1));
@@ -554,6 +582,7 @@ class ApplicationTests {
 		entrantRegister.setEntrant(entrant);		
 		entrantRegister.setFaculty(faculty);
 		entrantRegister.setUser(user);
+		entrantRegisterRepository.save(entrantRegister);
 		
 		entrantRegisters = entrantRegisterRepository.findAll();
 		assertThat(entrantRegisters, hasSize(1));		
